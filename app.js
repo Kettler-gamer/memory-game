@@ -240,6 +240,8 @@ function randomizeCards() {
 // returns to main meny
 function returnToMeny() {
   if (cardChoices.choice2 != null) return;
+  cardChoices.choice1 = null;
+  cardChoices.choice2 = null;
   player2.name = "";
   player1.name = "";
   player1.score = 0;
