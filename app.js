@@ -25,6 +25,28 @@ function createMainPage() {
     </article>`;
 }
 
+function createGameField() {
+  main.innerHTML = `
+  <div class="playfield">
+    <b class="current-player">Spelare ${player1.name} tur</b>
+    <div class="cards">
+        </div>
+    </div>
+    <div class="gameinfo-container">
+        <h2>Poäng</h2>
+        <div class="usersPoints-container">
+            <h3 class="player-score">${player1.name} : ${player1.score}</h3>
+            <h3 class="player-score">${player2.name} : ${player2.score}</h3>
+        </div>
+        <article class="history-container">
+            <h3>Historik</h3>
+        </article>
+        <button class="button" onclick="resetGame()">Återställ Spel</button>
+        <button class="button" onclick="returnToMeny()">Avsluta</button>
+    </div>`;
+  randomizeCards();
+}
+
 function setPlayerNames(names) {
   if (names[0].value == "") {
     player1.name = "Spelare 1";
@@ -35,6 +57,16 @@ function setPlayerNames(names) {
     player2.name = "Spelare 2";
   } else {
     player2.name = names[1].value;
+  }
+  if (player1.name == "namn på spelare 1") {
+    player1.name = "Mister funny guy";
+  }
+  if (player2.name == "namn på spelare 2") {
+    player2.name = "Mister funny guy";
+  }
+  if (player1.name == player2.name) {
+    player1.name = player1.name + " 1";
+    player2.name = player2.name + " 2";
   }
 }
 
@@ -75,13 +107,52 @@ function checkPair() {
 
     handleHistory(players[currentPlayer].name, img1Src.name);
 
+    CheckWinner();
     cardChoices.choice1.disabled = true;
     cardChoices.choice2.disabled = true;
   } else {
     switchPlayers(img1Src, img2Src);
+    flipCard(cardChoices.choice1);
+    flipCard(cardChoices.choice2);
   }
+
   cardChoices.choice1 = null;
   cardChoices.choice2 = null;
+}
+
+function CheckWinner() {
+  if (player1.score + player2.score == 12) {
+    let winnerText;
+    if (player1.score > player2.score) {
+      winnerText = `${player1.name} vann!`;
+    } else if (player1.score == player2.score) {
+      winnerText = "Det blev oavgjort!";
+    } else {
+      winnerText = `${player2.name} vann!`;
+    }
+
+    const h4 = document.createElement("h4");
+
+    h4.textContent = winnerText;
+
+    const historyContainer = main.querySelector(".history-container");
+    historyContainer.append(h4);
+  }
+}
+
+function flipCard(card) {
+  if (
+    !card.classList.contains("card-flip") &&
+    !card.classList.contains("card-flip-back")
+  ) {
+    card.classList.toggle("card-flip");
+  } else if (card.classList.contains("card-flip")) {
+    card.classList.remove("card-flip");
+    card.classList.add("card-flip-back");
+  } else {
+    card.classList.remove("card-flip-back");
+    card.classList.add("card-flip");
+  }
 }
 
 function onCardClick(event) {
@@ -89,6 +160,7 @@ function onCardClick(event) {
     return;
   }
   const button = event.target;
+  flipCard(button);
   button.removeEventListener("click", onCardClick);
   if (cardChoices.choice1 == null) {
     cardChoices.choice1 = button;
@@ -120,30 +192,13 @@ function createCard(parent, index, cardName) {
   img.hidden = true;
   img.name = cardName;
 
+  if (navigator.userAgent.indexOf("Firefox") != -1) {
+    img.style = "position: absolute; top: 0; left: 0;";
+    button.style = "position: relative;";
+  }
+
   button.append(img);
   parent.append(button);
-}
-
-function createGameField() {
-  main.innerHTML = `
-  <div class="playfield">
-    <b class="current-player">Spelare ${player1.name} tur</b>
-    <div class="cards">
-        </div>
-    </div>
-    <div class="gameinfo-container">
-        <h2>Poäng</h2>
-        <div class="usersPoints-container">
-            <h3 class="player-score">${player1.name} : ${player1.score}</h3>
-            <h3 class="player-score">${player2.name} : ${player2.score}</h3>
-        </div>
-        <article class="history-container">
-            <h3>Historik</h3>
-        </article>
-        <button class="button" onclick="resetGame()">Återställ Spel</button>
-        <button class="button" onclick="returnToMeny()">Avsluta</button>
-    </div>`;
-  randomizeCards();
 }
 
 function randomizeCards() {
@@ -174,7 +229,7 @@ function randomizeCards() {
     [12, "Enhörnings anka"],
     [12, "Enhörnings anka"],
   ];
-  for (let i = 0; i < 24; i++) {
+  while (cardInfos.length > 0) {
     let randomIndex = Math.floor(Math.random() * cardInfos.length);
     let randomNum = cardInfos[randomIndex][0];
     createCard(cards, randomNum, cardInfos[randomIndex][1]);
@@ -185,27 +240,21 @@ function randomizeCards() {
 // returns to main meny
 function returnToMeny() {
   if (cardChoices.choice2 != null) return;
-  resetAllPlayerData();
-  createMainPage();
+  player2.name = "";
+  player1.name = "";
+  player1.score = 0;
+  player2.score = 0;
   currentPlayer = 0;
+  createMainPage();
 }
 // resets the game
 function resetGame() {
-  resetPlayerScore();
-  createGameField();
-  currentPlayer = 0;
-}
-// restarts all player info
-function resetAllPlayerData() {
-  resetPlayerName();
-  resetPlayerScore();
-}
-function resetPlayerName() {
-  player2.name = "";
-  player1.name = "";
-}
-function resetPlayerScore() {
+  if (cardChoices.choice2 != null) return;
+  cardChoices.choice1 = null;
+  cardChoices.choice2 = null;
   player1.score = 0;
   player2.score = 0;
+  currentPlayer = 0;
+  createGameField();
 }
 createMainPage();
