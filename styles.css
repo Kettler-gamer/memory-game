@@ -1,5 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&display=swap");
 
+/* General */
+
 * {
   margin: 0;
   padding: 0;
@@ -48,10 +50,70 @@ header {
   background-color: rgb(225, 225, 225);
 }
 
+.main-content {
+  margin: 0 auto;
+  min-width: 1400px;
+  max-width: 1400px;
+  display: flex;
+  width: 100%;
+  height: 80%;
+
+  margin-top: 5em;
+}
+
+/* Main page */
+
+.main-article {
+  background-color: rgb(225, 225, 225);
+  width: 50%;
+  height: 50%;
+  margin: 0 auto;
+
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.article-text {
+  text-align: center;
+  width: 100%;
+  height: 10%;
+
+  padding: 0.5em;
+
+  border-bottom: 1px solid black;
+}
+
+.article-pname-container {
+  width: 60%;
+  height: 5em;
+  margin: 0 auto;
+}
+
 .player-input {
   width: 100%;
   height: 2.5em;
 }
+
+.article-button {
+  width: 90%;
+  height: 2em;
+  background-color: rgb(96, 96, 96);
+  color: white;
+  font-size: larger;
+  border: none;
+  border-radius: 0.5em;
+  margin: 0 auto;
+}
+
+/* Game Field */
+
+.playfield {
+  display: flex;
+  flex-wrap: wrap;
+  width: 80%;
+  height: 100%;
+}
+
 .current-player {
   margin: 0 auto;
 }
@@ -100,69 +162,6 @@ header {
   margin: 1em auto;
 }
 
-.button:hover {
-  opacity: 60%;
-}
-
-.main-content {
-  margin: 0 auto;
-  min-width: 1400px;
-  max-width: 1400px;
-  display: flex;
-  width: 100%;
-  height: 80%;
-
-  margin-top: 5em;
-}
-
-.main-article {
-  background-color: rgb(225, 225, 225);
-  width: 50%;
-  height: 50%;
-  margin: 0 auto;
-
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.article-text {
-  text-align: center;
-  width: 100%;
-  height: 10%;
-
-  padding: 0.5em;
-
-  border-bottom: 1px solid black;
-}
-
-.article-pname-container {
-  width: 60%;
-  height: 5em;
-  margin: 0 auto;
-}
-
-.article-button {
-  width: 90%;
-  height: 2em;
-  background-color: rgb(96, 96, 96);
-  color: white;
-  font-size: larger;
-  border: none;
-  border-radius: 0.5em;
-  margin: 0 auto;
-}
-
-.article-button:hover {
-  opacity: 60%;
-}
-
-.playfield {
-  display: flex;
-  flex-wrap: wrap;
-  width: 80%;
-  height: 100%;
-}
-
 .card {
   width: 150px;
   height: 150px;
@@ -172,6 +171,20 @@ header {
   border: 5px;
   border-style: solid;
   border-radius: 0.3em;
+}
+
+/* Animations */
+
+.article-button:hover {
+  opacity: 60%;
+}
+
+.button:hover {
+  opacity: 60%;
+}
+
+.card:hover {
+  background-color: rgb(190, 190, 190);
 }
 
 .card-flip {

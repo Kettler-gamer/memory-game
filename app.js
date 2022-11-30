@@ -116,8 +116,7 @@ function checkPair() {
     flipCard(cardChoices.choice2);
   }
 
-  cardChoices.choice1 = null;
-  cardChoices.choice2 = null;
+  resetCardChoices();
 }
 
 function CheckWinner() {
@@ -240,23 +239,33 @@ function randomizeCards() {
 // returns to main meny
 function returnToMeny() {
   if (cardChoices.choice2 != null) return;
-  cardChoices.choice1 = null;
-  cardChoices.choice2 = null;
-  player2.name = "";
-  player1.name = "";
-  player1.score = 0;
-  player2.score = 0;
+  resetCardChoices();
+  resetPlayerNames();
+  resetScore();
   currentPlayer = 0;
   createMainPage();
 }
 // resets the game
 function resetGame() {
   if (cardChoices.choice2 != null) return;
-  cardChoices.choice1 = null;
-  cardChoices.choice2 = null;
-  player1.score = 0;
-  player2.score = 0;
+  resetCardChoices();
+  resetScore();
   currentPlayer = 0;
   createGameField();
 }
 createMainPage();
+
+function resetScore() {
+  player1.score = 0;
+  player2.score = 0;
+}
+
+function resetCardChoices() {
+  cardChoices.choice1 = null;
+  cardChoices.choice2 = null;
+}
+
+function resetPlayerNames() {
+  player2.name = "";
+  player1.name = "";
+}
