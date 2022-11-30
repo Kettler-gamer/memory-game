@@ -78,11 +78,9 @@ function onStartGameClick(event) {
   createGameField();
 }
 
-function switchPlayers(img1Src, img2Src) {
+function switchPlayers() {
   cardChoices.choice1.addEventListener("click", onCardClick);
   cardChoices.choice2.addEventListener("click", onCardClick);
-  img1Src.hidden = true;
-  img2Src.hidden = true;
   currentPlayer = (currentPlayer + 1) % 2;
   main.querySelector(
     ".current-player"
@@ -98,20 +96,20 @@ function updateScore() {
 }
 
 function checkPair() {
-  img1Src = cardChoices.choice1.querySelector("img");
-  img2Src = cardChoices.choice2.querySelector("img");
+  let img1Src = cardChoices.choice1.querySelector("img");
+  let img2Src = cardChoices.choice2.querySelector("img");
 
   if (img1Src.src == img2Src.src) {
     players[currentPlayer].score++;
     updateScore();
 
-    handleHistory(players[currentPlayer].name, img1Src.name);
+    handleHistory(players[currentPlayer].name, img1Src.getAttribute("name"));
 
     CheckWinner();
     cardChoices.choice1.disabled = true;
     cardChoices.choice2.disabled = true;
   } else {
-    switchPlayers(img1Src, img2Src);
+    switchPlayers();
     flipCard(cardChoices.choice1);
     flipCard(cardChoices.choice2);
   }
@@ -145,12 +143,15 @@ function flipCard(card) {
     !card.classList.contains("card-flip-back")
   ) {
     card.classList.toggle("card-flip");
+    card.querySelector("img").hidden = false;
   } else if (card.classList.contains("card-flip")) {
     card.classList.remove("card-flip");
     card.classList.add("card-flip-back");
+    card.querySelector("img").hidden = true;
   } else {
     card.classList.remove("card-flip-back");
     card.classList.add("card-flip");
+    card.querySelector("img").hidden = false;
   }
 }
 
@@ -167,8 +168,6 @@ function onCardClick(event) {
     cardChoices.choice2 = button;
     setTimeout(checkPair, 2000);
   }
-
-  button.querySelector("img").hidden = false;
 }
 
 function handleHistory(player, imgName) {
@@ -189,7 +188,7 @@ function createCard(parent, index, cardName) {
   img.src = "assets/images/Badanka " + index + ".jpeg";
   img.className = "img";
   img.hidden = true;
-  img.name = cardName;
+  img.setAttribute("name", cardName);
 
   if (navigator.userAgent.indexOf("Firefox") != -1) {
     img.style = "position: absolute; top: 0; left: 0;";
